@@ -42,12 +42,28 @@ defmodule WpApiWrapper.Schema do
       arg :some_value, :string
       resolve &Resolver.Index.find/2
     end
+    field :post, :post do
+      arg :id, :id
+      resolve &Resolver.Post.find/2
+    end
     node field do
       resolve fn
         %{type: :user, id: id}, _ ->
           {:ok, Resolver.User.find(%{id: id},%{})}
         %{type: :post, id: id}, _ ->
           {:ok, Resolver.Post.find(%{id: id},%{})}
+        %{type: :tag, id: id}, _ ->
+          {:ok, Resolver.Tag.find(%{id: id},%{})}
+        %{type: :filter, id: id}, _ ->
+          {:ok, Resolver.Filter.find(%{id: id},%{})}
+        %{type: :category, id: id}, _ ->
+          {:ok, Resolver.Category.find(%{id: id},%{})}
+        %{type: :meta, id: id}, _ ->
+          {:ok, Resolver.Meta.find(%{id: id},%{})}
+        %{type: :postimage, id: id}, _ ->
+          {:ok, Resolver.PostImage.find(%{id: id},%{})}
+        %{type: :revision, id: id}, _ ->
+          {:ok, Resolver.Revision.find(%{id: id},%{})}
         %{type: :index, id: id}, _ ->
           {:ok, Resolver.Index.find(%{id: id},%{})}
       end

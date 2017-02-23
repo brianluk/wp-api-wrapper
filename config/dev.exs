@@ -36,7 +36,7 @@ config :phoenix, :stacktrace_depth, 20
 config :wp_api_wrapper, WpApiWrapper.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "pub_admin",
-  password: "infomine!",
+  password: "dbo011dsa",
   database: "wp",
-  hostname: "localhost",
+  hostname: "or-dblamp-ro.c5fcoevjuyll.us-west-2.rds.amazonaws.com",
   pool_size: 10
