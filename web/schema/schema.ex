@@ -44,6 +44,10 @@ defmodule WpApiWrapper.Schema do
       arg :id, :id
       resolve &Resolver.Post.find/2
     end
+    field :tag, :tag do
+      arg :id, :id
+      resolve &Resolver.Tag.find/2 
+    end
     node field do
       resolve fn
         %{type: :user, id: id}, _ ->

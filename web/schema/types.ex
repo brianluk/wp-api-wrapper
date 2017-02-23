@@ -2,6 +2,7 @@ defmodule WpApiWrapper.Schema.Types do
   use Absinthe.Schema.Notation
   use Absinthe.Relay.Schema.Notation
   use Absinthe.Ecto, repo: WpApiWrapper.Repo
+  alias WpApiWrapper.Resolver
   alias WpApiWrapper.Repo
   alias WpApiWrapper.Post
 
@@ -34,7 +35,11 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_status, non_null(:string)
     field :post_type, non_null(:string)
     field :post_author, :user, resolve: assoc(:users)
-    #field :tags, list_of(:tag), resolve: assoc(:tag)
+    field :tags, list_of(:tag) do
+      resolve fn post, _, _ ->
+        batch({Resolver.Tag, :all}, post.id, fn batch_results -> {:ok, batch_results} end)
+      end
+    end
     #field :categories, list_of(:category), resolve: assoc(:category)
     #field :filters, list_of(:filter), resolve: assoc(:filter)
     #field :metas, list_of(:meta), resolve: assoc(:meta)
