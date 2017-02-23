@@ -21,3 +21,28 @@ Some outstanding issues that need to be addressed:
 ## Schema
 
 Still testing and developing the schema to normalize the terms and taxonomy tables. Also need to separate posts from revisions and attachments in the post table
+
+## Sample Query
+
+Below shows a query example to grab the latest 10 posts with Title and Author
+
+```
+query {
+  index {
+    latestPosts(first: 10) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        node {
+          postTitle
+          postAuthor {
+            displayName
+          }
+        }
+      }
+    }
+  }
+}
+```
