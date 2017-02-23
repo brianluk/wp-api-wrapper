@@ -38,9 +38,7 @@ defmodule WpApiWrapper.Schema do
 
   query do
     field :index, :index do
-#      arg :id, non_null(:id)
-      arg :some_value, :string
-      resolve &Resolver.Index.find/2
+      resolve &Resolver.Index.all/2
     end
     field :post, :post do
       arg :id, :id

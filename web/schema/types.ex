@@ -22,11 +22,6 @@ defmodule WpApiWrapper.Schema.Types do
     end
   end
 
-  node object :index do
-    field :data, :string
-    field :from_db, :string
-  end
-
   node object :user, description: "Name of Post Author" do
     field :display_name, non_null(:string)
     field :user_email, :string
@@ -39,11 +34,11 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_status, non_null(:string)
     field :post_type, non_null(:string)
     field :post_author, :user, resolve: assoc(:users)
-    field :tags, list_of(:tag), resolve: assoc(:tag)
-    field :categories, list_of(:category), resolve: assoc(:category)
-    field :filters, list_of(:filter), resolve: assoc(:filter)
-    field :metas, list_of(:meta), resolve: assoc(:meta)
-    field :images, list_of(:postimage), resolve: assoc(:postimage)
+    #field :tags, list_of(:tag), resolve: assoc(:tag)
+    #field :categories, list_of(:category), resolve: assoc(:category)
+    #field :filters, list_of(:filter), resolve: assoc(:filter)
+    #field :metas, list_of(:meta), resolve: assoc(:meta)
+    #field :images, list_of(:postimage), resolve: assoc(:postimage)
   end
 
   node object :tag, description: "Term Name" do

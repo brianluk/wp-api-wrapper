@@ -8,16 +8,14 @@ defmodule WpApiWrapper.Resolver.Index do
     query =
       from p in Post,
       where: p.post_status == "publish" and p.post_parent == 0,
-      order_by: [desc: :post_date],
-      limit: 10, offset: 10
+      order_by: [desc: :post_date]
     {:ok, Repo.all(query)}
   end
 
-  def find(%{some_value: sv}, _info) do
-    query =
-      from p in Post,
-      where: p.id == 876535
-    rvalue = Repo.one(query).post_title
-    {:ok, %{id: "1", data: sv, from_db: rvalue}}
+  def find(%{id: id}, _info) do
+    case Repo.get(Post, id) do
+      nil -> {:error, "Post id #{id} not found"}
+      user -> {:ok, user}
+    end
   end
 end
