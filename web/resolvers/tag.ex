@@ -25,7 +25,7 @@ defmodule WpApiWrapper.Resolver.Tag do
        join: u in assoc(p, :termtaxonomy),
        join: t in Term, on: t.term_id == u.term_taxonomy_id,
        where: u.taxonomy == "post_tag" and p.id in ^post_ids,
-       select: %{id: u.term_taxonomy_id, tag_name: t.name, slug: t.slug}
+       select: %{id: p.id, tag_name: t.name, slug: t.slug}
     Repo.all(query)
   end
 end

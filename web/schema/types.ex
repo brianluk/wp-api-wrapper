@@ -37,7 +37,16 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_author, :user, resolve: assoc(:users)
     field :tags, list_of(:tag) do
       resolve fn post, _, _ ->
-        batch({Resolver.Tag, :all}, post.id, fn batch_results -> {:ok, batch_results} end)
+        batch({Resolver.Tag, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.id == post.id))}
+        end)
+      end
+    end
+    field :categories, list_of(:category) do
+      resolve fn post, _, _ ->
+        batch({Resolver.Category, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.id == post.id))}
+        end)
       end
     end
     #field :categories, list_of(:category), resolve: assoc(:category)
