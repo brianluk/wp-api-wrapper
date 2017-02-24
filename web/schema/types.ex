@@ -49,8 +49,13 @@ defmodule WpApiWrapper.Schema.Types do
         end)
       end
     end
-    #field :categories, list_of(:category), resolve: assoc(:category)
-    #field :filters, list_of(:filter), resolve: assoc(:filter)
+    field :filters, list_of(:filter) do
+      resolve fn post, _, _ ->
+        batch({Resolver.Filter, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.id == post.id))}
+        end)
+      end
+    end
     #field :metas, list_of(:meta), resolve: assoc(:meta)
     #field :images, list_of(:postimage), resolve: assoc(:postimage)
   end

@@ -1,7 +1,6 @@
 defmodule WpApiWrapper.Resolver.Category do
   alias WpApiWrapper.Repo
   alias WpApiWrapper.TermTaxonomy
-  alias WpApiWrapper.Post
   alias WpApiWrapper.Term
 
   import Ecto.Query
@@ -14,7 +13,7 @@ defmodule WpApiWrapper.Resolver.Category do
       select: %{id: u.term_taxonomy_id, category_name: t.name, slug: t.slug}
 
     case Repo.get(query, id) do
-      nil -> {:error, "Tag id #{id} not found"}
+      nil -> {:error, "Category id #{id} not found"}
       tag -> {:ok, tag}
     end
   end
