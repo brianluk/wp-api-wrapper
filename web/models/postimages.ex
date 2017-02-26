@@ -10,8 +10,6 @@ defmodule WpApiWrapper.PostImage do
     field :post_type, :string
     field :post_mime_type, :string
     field :guid, :string
-    belongs_to :post, WpApiWrapper.Post, foreign_key: :post_parent
-    has_many :postmeta, WpApiWrapper.PostMeta, foreign_key: :post_id
   end
 
 end

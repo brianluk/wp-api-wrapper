@@ -6,7 +6,7 @@ defmodule WpApiWrapper.PostMeta do
   schema "mining_postmeta" do
     field :meta_key, :string
     field :meta_value, :string
-
-    belongs_to :mining_posts, WpApiWrapper.Post, foreign_key: :post_id
+    field :post_id, :integer
+    #belongs_to :mining_posts, WpApiWrapper.Post, foreign_key: :post_id
   end
 end

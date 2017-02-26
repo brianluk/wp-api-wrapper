@@ -58,7 +58,12 @@ defmodule WpApiWrapper.Schema.Types do
         end)
       end
     end
-    #field :metas, list_of(:meta), resolve: assoc(:meta)
+    field :meta, :postmeta do
+      resolve fn post, _, _ ->
+        {:ok, Resolver.PostMeta.find(%{id: post.id},%{})}
+      end
+    end
+
     #field :images, list_of(:postimage), resolve: assoc(:postimage)
   end
 
