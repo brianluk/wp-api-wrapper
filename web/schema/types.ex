@@ -13,9 +13,11 @@ defmodule WpApiWrapper.Schema.Types do
       resolve fn
         pagination_args, %{source: _} ->
           query =
-            from p in Post,
-            where: p.post_status == "publish" and p.post_parent == 0,
-            order_by: [desc: :post_date]
+            Post
+            |> where(post_status: "publish")
+            |> where(post_parent: 0)
+            |> where([p], p.post_type != "sponsored_content")
+            |> order_by([desc: :post_date])
           {:ok, Absinthe.Relay.Connection.from_query(
             query,&Repo.all/1, pagination_args
           )}
@@ -75,9 +77,15 @@ defmodule WpApiWrapper.Schema.Types do
     field :slug, non_null(:string)
   end
 
-  node object :meta, description: "Meta Data for Posts and images" do
-    field :meta_key, non_null(:string)
-    field :meta_value, non_null(:string)
+  node object :postmeta, description: "Meta Data for Posts" do
+    field :bitly, :string
+    field :secondary_title, :string
+  end
+
+  node object :imagemeta, description: "Meta Data for Images" do
+    field :file, non_null(:string)
+    field :metadata, non_null(:string)
+    field :alt_tag, :string
   end
 
   node object :postimage, description: "Images for a Post" do
@@ -85,7 +93,7 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_type, non_null(:string)
     field :post_mime_type, non_null(:string)
     field :guid, non_null(:string)
-    field :metas, list_of(:meta), resolve: assoc(:meta)
+    field :imagemetas, list_of(:imagemeta)
   end
 
   node object :revision do

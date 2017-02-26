@@ -18,8 +18,10 @@ defmodule WpApiWrapper.Schema do
         :filter
       %{category_name: _}, _ ->
         :category
-      %{meta_key: _,}, _ ->
-        :meta
+      %{bitly: _,}, _ ->
+        :postmeta
+      %{file: _,}, _ ->
+        :imagemeta
       %{post_mime_type: _}, _ ->
         :postimage
       %{post_parent: _}, _ ->
@@ -46,7 +48,7 @@ defmodule WpApiWrapper.Schema do
     end
     field :tag, :tag do
       arg :id, :id
-      resolve &Resolver.Tag.find/2 
+      resolve &Resolver.Tag.find/2
     end
     node field do
       resolve fn
@@ -60,8 +62,10 @@ defmodule WpApiWrapper.Schema do
           {:ok, Resolver.Filter.find(%{id: id},%{})}
         %{type: :category, id: id}, _ ->
           {:ok, Resolver.Category.find(%{id: id},%{})}
-        %{type: :meta, id: id}, _ ->
-          {:ok, Resolver.Meta.find(%{id: id},%{})}
+        %{type: :postmeta, id: id}, _ ->
+          {:ok, Resolver.PostMeta.find(%{id: id},%{})}
+        %{type: :imagemeta, id: id}, _ ->
+          {:ok, Resolver.ImageMeta.find(%{id: id},%{})}
         %{type: :postimage, id: id}, _ ->
           {:ok, Resolver.PostImage.find(%{id: id},%{})}
         %{type: :revision, id: id}, _ ->

@@ -1,4 +1,4 @@
-defmodule WpApiWrapper.Resolver.Meta do
+defmodule WpApiWrapper.Resolver.ImageMeta do
   alias WpApiWrapper.Repo
   alias WpApiWrapper.PostMeta
 
