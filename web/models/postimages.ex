@@ -9,6 +9,7 @@ defmodule WpApiWrapper.PostImage do
     field :post_status, :string
     field :post_type, :string
     field :post_mime_type, :string
+    field :post_parent, :integer
     field :guid, :string
   end
 

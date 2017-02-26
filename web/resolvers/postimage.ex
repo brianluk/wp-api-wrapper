@@ -13,4 +13,12 @@ defmodule WpApiWrapper.Resolver.PostImage do
       image -> {:ok, image}
     end
   end
+
+  def all(_, parent_ids) do
+    query =
+      PostImage
+      |> where(post_type: "attachment")
+      |> where([p], p.post_parent in  ^parent_ids)
+    Repo.all(query)
+  end
 end

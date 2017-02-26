@@ -58,13 +58,22 @@ defmodule WpApiWrapper.Schema.Types do
         end)
       end
     end
-    field :meta, :postmeta do
+    field :meta, list_of(:postmeta) do
       resolve fn post, _, _ ->
-        {:ok, Resolver.PostMeta.find(%{id: post.id},%{})}
+        #{:ok, Resolver.PostMeta.find(%{id: post.id},%{})}
+        batch({Resolver.PostMeta, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.id == post.id))}
+        end)
       end
     end
 
-    #field :images, list_of(:postimage), resolve: assoc(:postimage)
+    field :images, :postimage do
+      resolve fn post, _, _ ->
+        batch({Resolver.PostImage, :all}, post.id, fn batch_results ->
+          {:ok, List.first(Enum.filter(batch_results, &(&1.post_parent == post.id)))}
+        end)
+      end
+    end
   end
 
   node object :tag, description: "Term Name" do
@@ -98,7 +107,14 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_type, non_null(:string)
     field :post_mime_type, non_null(:string)
     field :guid, non_null(:string)
-    field :imagemetas, list_of(:imagemeta)
+    field :imagemetas, list_of(:imagemeta) do
+      resolve fn post, _, _ ->
+        #{:ok, Resolver.PostMeta.find(%{id: post.id},%{})}
+        batch({Resolver.ImageMeta, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.id == post.id))}
+        end)
+      end
+    end
   end
 
   node object :revision do
