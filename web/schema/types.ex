@@ -36,6 +36,8 @@ defmodule WpApiWrapper.Schema.Types do
     field :post_title, non_null(:string)
     field :post_status, non_null(:string)
     field :post_type, non_null(:string)
+    field :post_excerpt, :string
+    field :post_name, :string
     field :post_author, :user, resolve: assoc(:users)
     field :tags, list_of(:tag) do
       resolve fn post, _, _ ->
@@ -71,6 +73,14 @@ defmodule WpApiWrapper.Schema.Types do
       resolve fn post, _, _ ->
         batch({Resolver.PostImage, :all}, post.id, fn batch_results ->
           {:ok, List.first(Enum.filter(batch_results, &(&1.post_parent == post.id)))}
+        end)
+      end
+    end
+
+    field :revisions, list_of(:revision) do
+      resolve fn post, _, _ ->
+        batch({Resolver.Revision, :all}, post.id, fn batch_results ->
+          {:ok, Enum.filter(batch_results, &(&1.post_parent == post.id))}
         end)
       end
     end
@@ -119,7 +129,11 @@ defmodule WpApiWrapper.Schema.Types do
 
   node object :revision do
     field :post_parent, :integer
-    field :post_type, :string
+    field :post_date, :string
+    field :post_content, :string
+    field :post_title, :string
+    field :post_author, :user, resolve: assoc(:users)
+    field :post_excerpt, :string
   end
   #scalar :time do
   #  decription "Time (in ISOz format)"

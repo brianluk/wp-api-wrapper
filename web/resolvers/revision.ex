@@ -13,4 +13,12 @@ defmodule WpApiWrapper.Resolver.Revision do
       revision -> {:ok, revision}
     end
   end
+
+  def all(_, post_ids) do
+    query =
+      from p in Post,
+      where: p.post_type == "revision" and p.post_parent in ^post_ids,
+      order_by: [desc: :post_date]
+    Repo.all(query)
+  end
 end
