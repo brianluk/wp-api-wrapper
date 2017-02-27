@@ -28,4 +28,13 @@ defmodule WpApiWrapper.Resolver.Tag do
        select: %{id: p.id, tag_name: t.name, slug: t.slug}
     Repo.all(query)
   end
+
+  def by_slug(%{slug: slug}, _) do
+    query =
+       from t in Term,
+       join: u in TermTaxonomy, on: t.term_id == u.term_id,
+       where: u.taxonomy == "post_tag" and t.slug == ^slug,
+       select: %{id: u.term_id, tag_name: t.name, slug: t.slug}
+    {:ok, Repo.one(query)}
+  end
 end

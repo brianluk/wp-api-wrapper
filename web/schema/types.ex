@@ -5,6 +5,7 @@ defmodule WpApiWrapper.Schema.Types do
   alias WpApiWrapper.Resolver
   alias WpApiWrapper.Repo
   alias WpApiWrapper.Post
+  alias WpApiWrapper.Term
 
   import Ecto.Query
 
@@ -28,6 +29,24 @@ defmodule WpApiWrapper.Schema.Types do
   node object :user, description: "Name of Post Author" do
     field :display_name, non_null(:string)
     field :user_email, :string
+    field :user_nicename, :string
+
+    connection field :latest_posts, node_type: :post do
+      resolve fn pagination_args, %{source: user} ->
+        query =
+          from p in Post,
+          join: u in assoc(p, :users),
+          where: u.user_nicename == ^user.user_nicename,
+          where: p.post_status == "publish",
+          where: p.post_type != "sponsored_content",
+          where: p.post_parent == 0,
+          order_by: [desc: :post_date]
+        {:ok, Absinthe.Relay.Connection.from_query(
+          query,&Repo.all/1, pagination_args
+        )}
+      end
+    end
+
   end
 
   node object :post, description: "Post Article" do
@@ -89,6 +108,20 @@ defmodule WpApiWrapper.Schema.Types do
   node object :tag, description: "Term Name" do
     field :tag_name, non_null(:string)
     field :slug, non_null(:string)
+
+    connection field :latest_posts, node_type: :post do
+      resolve fn pagination_args, %{source: tag} ->
+        query =
+          from p in Post,
+          join: u in assoc(p, :termtaxonomy),
+          join: t in Term, on: t.term_id == u.term_taxonomy_id,
+          where: u.taxonomy == "post_tag" and t.slug == ^tag.slug,
+          order_by: [desc: :post_date]
+        {:ok, Absinthe.Relay.Connection.from_query(
+          query,&Repo.all/1, pagination_args
+        )}
+      end
+    end
   end
 
   node object :filter, description: "Term Name" do

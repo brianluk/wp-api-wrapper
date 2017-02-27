@@ -6,6 +6,7 @@ defmodule WpApiWrapper.User do
   schema "mining_users" do
     field :user_email, :string
     field :display_name, :string
+    field :user_nicename, :string
     has_many :mining_posts, WpApiWrapper.Post
   end
 

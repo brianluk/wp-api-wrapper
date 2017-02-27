@@ -21,4 +21,13 @@ defmodule WpApiWrapper.Resolver.Post do
       order_by: [desc: :post_date]
     {:ok, Repo.all(query)}
   end
+
+  def by_name(%{post_name: name}, _) do
+    query =
+      Post
+      |> where(post_status: "publish")
+      |> where(post_name: ^name)
+      |> where(post_parent: 0)
+    {:ok, Repo.one(query)}
+  end
 end

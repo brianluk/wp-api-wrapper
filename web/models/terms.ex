@@ -8,7 +8,7 @@ defmodule WpApiWrapper.Term do
     field :slug, :string
     field :term_group, :integer
 
-    has_many :mining_term_taxonomy, WpApiWrapper.TermTaxonomy
+    has_many :mining_term_taxonomy, WpApiWrapper.TermTaxonomy, references: :term_id
   end
 
 end

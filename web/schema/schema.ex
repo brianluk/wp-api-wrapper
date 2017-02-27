@@ -43,12 +43,16 @@ defmodule WpApiWrapper.Schema do
       resolve &Resolver.Index.all/2
     end
     field :post, :post do
-      arg :id, :id
-      resolve &Resolver.Post.find/2
+      arg :post_name, :id
+      resolve &Resolver.Post.by_name/2
     end
     field :tag, :tag do
-      arg :id, :id
-      resolve &Resolver.Tag.find/2
+      arg :slug, :string
+      resolve &Resolver.Tag.by_slug/2
+    end
+    field :user, :user do
+      arg :user_nicename, :string
+      resolve &Resolver.User.by_name/2
     end
     node field do
       resolve fn
@@ -70,8 +74,8 @@ defmodule WpApiWrapper.Schema do
           {:ok, Resolver.PostImage.find(%{id: id},%{})}
         %{type: :revision, id: id}, _ ->
           {:ok, Resolver.Revision.find(%{id: id},%{})}
-        %{type: :index, id: id}, _ ->
-          {:ok, Resolver.Index.find(%{id: id},%{})}
+#        %{type: :index, id: id}, _ ->
+#          {:ok, Resolver.Index.find(%{id: id},%{})}
       end
     end
   end

@@ -8,7 +8,7 @@ defmodule WpApiWrapper.TermTaxonomy do
     field :parent, :integer
     field :count, :integer
 
-    belongs_to :terms, WpApiWrapper.Term, foreign_key: :term_id, references: :term_id
+    belongs_to :terms, WpApiWrapper.Term, foreign_key: :term_id
     many_to_many :posts, WpApiWrapper.Post, join_through: "mining_term_relationships", join_keys: [term_taxonomy_id: :term_taxonomy_id, object_id: :ID]
   end
 
