@@ -46,3 +46,18 @@ query {
   }
 }
 ```
+## In Progress
+
+* Abstract out the table prefix (mining_)
+* Abstract out specific plugin/custom edits like bitly meta data
+* Posts content should be pulled from latest revision
+* Incorporating filters to ignore or include posts
+
+## To do for production
+
+* Add authorization module
+
+## Clean up
+
+* Standardize query formation. Currently a mix of pipe vs sql
+* Implement :time scalar for post date

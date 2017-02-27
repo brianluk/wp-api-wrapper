@@ -105,7 +105,7 @@ defmodule WpApiWrapper.Schema.Types do
     end
   end
 
-  node object :tag, description: "Term Name" do
+  node object :tag, description: "Tag Name" do
     field :tag_name, non_null(:string)
     field :slug, non_null(:string)
 
@@ -124,12 +124,12 @@ defmodule WpApiWrapper.Schema.Types do
     end
   end
 
-  node object :filter, description: "Term Name" do
+  node object :filter, description: "Filter Name" do
     field :filter_name, non_null(:string)
     field :slug, non_null(:string)
   end
 
-  node object :category, description: "Term Name" do
+  node object :category, description: "Category Name" do
     field :category_name, non_null(:string)
     field :slug, non_null(:string)
   end
